@@ -23,18 +23,48 @@ public class CarEntity : MonoBehaviour
     float m_DeltaMovement = 0;
     float CarLength = 0.96f;
 
+    [SerializeField] SpriteRenderer[] m_renders = new SpriteRenderer[5];
+    void ChangeColor(Color _color) {
+        foreach(SpriteRenderer r in m_renders){
+            r.color = _color;
+        }
+    }
+
+    void ResetColor() {
+        ChangeColor(Color.blue);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        ChangeColor(Color.red);
+        stop();
+    }
+    private void OnCollisionStay2D(Collision2D collision) {
+        ChangeColor(Color.yellow);
+        stop();
+    }
+    private void OnCollisionExit2D(Collision2D collision) {
+        ResetColor();
+    }
+    private void OnTriggerEnter2D(Collider2D other){
+        Checkpiont checkpiont = other.gameObject.GetComponent <Checkpiont> ;
+    }
+
+    void stop() {
+        m_Velocity = 0;
+    }
+
     void Start()
     {
-
+        ResetColor();
     }
-    void Update()
+    void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.UpArrow)) { 
             // Speed up
-            m_Velocity = Mathf.Min(maxVelocity, m_Velocity + Time.deltaTime * deceleration);
+            m_Velocity = Mathf.Min(maxVelocity, m_Velocity + Time.fixedDeltaTime * deceleration);
         }
         if (Input.GetKey(KeyCode.DownArrow)) {
-            m_Velocity = Mathf.Max(0, m_Velocity - Time.deltaTime * deceleration);
+            m_Velocity = Mathf.Max(-5, m_Velocity - Time.fixedDeltaTime * deceleration);
         }
 
         m_DeltaMovement = m_Velocity * Time.deltaTime;
@@ -46,7 +76,7 @@ public class CarEntity : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftArrow)) {
             m_FrontWheelAngle = Mathf.Clamp(
-                m_FrontWheelAngle + Time.deltaTime * turnAngulurVelocity,
+                m_FrontWheelAngle + Time.fixedDeltaTime * turnAngulurVelocity,
                 -WHEEL_ANGLE_LIMIT,
                 WHEEL_ANGLE_LIMIT );
 
@@ -54,7 +84,7 @@ public class CarEntity : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.RightArrow)) {
             m_FrontWheelAngle = Mathf.Clamp(
-               m_FrontWheelAngle - Time.deltaTime * turnAngulurVelocity,
+               m_FrontWheelAngle - Time.fixedDeltaTime * turnAngulurVelocity,
                -WHEEL_ANGLE_LIMIT,
                WHEEL_ANGLE_LIMIT );
 
