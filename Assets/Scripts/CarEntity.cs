@@ -39,16 +39,19 @@ public class CarEntity : MonoBehaviour
         stop();
     }
     private void OnCollisionStay2D(Collision2D collision) {
-        ChangeColor(Color.yellow);
-        stop();
+            ChangeColor(Color.yellow);
     }
     private void OnCollisionExit2D(Collision2D collision) {
         ResetColor();
     }
-    private void OnTriggerEnter2D(Collider2D other){
-        Checkpiont checkpiont = other.gameObject.GetComponent <Checkpiont> ;
-    }
 
+    void OnTriggerEnter2D(Collider2D other){
+        Checkpoint checkpoint = other.gameObject.GetComponent<Checkpoint> ();
+        if (checkpoint != null) {
+            ChangeColor(Color.green);
+            this.Invoke("ResetColor", 0.5f);
+        }
+    }
     void stop() {
         m_Velocity = 0;
     }
