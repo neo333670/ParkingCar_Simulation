@@ -11,7 +11,7 @@ public class CarEntity : MonoBehaviour
     public GameObject wheelBackRight;
     //Car Steering
     float m_FrontWheelAngle = 0;
-    const float WHEEL_ANGLE_LIMIT = 40f;
+    const float WHEEL_ANGLE_LIMIT = 20f;
     public float turnAngulurVelocity = 20f;
     //Accelerate and deceleration
     float m_Velocity = 0;
@@ -58,41 +58,55 @@ public class CarEntity : MonoBehaviour
 
     void Start()
     {
-        ResetColor();
+        //ResetColor();
     }
     void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.UpArrow)) { 
-            // Speed up
-            m_Velocity = Mathf.Min(maxVelocity, m_Velocity + Time.fixedDeltaTime * deceleration);
-        }
-        if (Input.GetKey(KeyCode.DownArrow)) {
-            m_Velocity = Mathf.Max(-5, m_Velocity - Time.fixedDeltaTime * deceleration);
-        }
-
-        m_DeltaMovement = m_Velocity * Time.deltaTime;
+        MoveUpControl();
+        TurnControl();
         //Update car transform 
+        m_DeltaMovement = m_Velocity * Time.deltaTime;
+        
         this.transform.Translate(Vector3.right * m_DeltaMovement);
         this.transform.Rotate(0, 0, 1/CarLength *
             Mathf.Tan(Mathf.Deg2Rad *m_FrontWheelAngle) 
             *m_DeltaMovement *Mathf.Rad2Deg);
+    }
 
+    void MoveUpControl() {
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            m_Velocity = Mathf.Min(maxVelocity, m_Velocity + Time.fixedDeltaTime * deceleration);
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            m_Velocity = Mathf.Max(-5, m_Velocity - Time.fixedDeltaTime * deceleration);
+        }
+        else { 
+            if(m_Velocity > 0) { m_Velocity -= Time.fixedDeltaTime * turnAngulurVelocity; }
+            if (m_Velocity < 0) {m_Velocity += Time.fixedDeltaTime * turnAngulurVelocity; }
+        }
+    }
+
+    void TurnControl() {
         if (Input.GetKey(KeyCode.LeftArrow)) {
             m_FrontWheelAngle = Mathf.Clamp(
                 m_FrontWheelAngle + Time.fixedDeltaTime * turnAngulurVelocity,
                 -WHEEL_ANGLE_LIMIT,
-                WHEEL_ANGLE_LIMIT );
-
-            UpdateWheels();
+                WHEEL_ANGLE_LIMIT);
         }
-        if (Input.GetKey(KeyCode.RightArrow)) {
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
             m_FrontWheelAngle = Mathf.Clamp(
                m_FrontWheelAngle - Time.fixedDeltaTime * turnAngulurVelocity,
                -WHEEL_ANGLE_LIMIT,
-               WHEEL_ANGLE_LIMIT );
-
-            UpdateWheels();
+               WHEEL_ANGLE_LIMIT);
         }
+        else {
+            if (m_FrontWheelAngle > 0) { m_FrontWheelAngle -= Time.fixedDeltaTime * deceleration *2; }
+            if (m_FrontWheelAngle < 0) { m_FrontWheelAngle += Time.fixedDeltaTime * deceleration *2; }
+        }
+        UpdateWheels();
     }
 
     void UpdateWheels() {
