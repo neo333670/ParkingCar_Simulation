@@ -14,6 +14,7 @@ public class TracingCameraEntity : MonoBehaviour
 
     void Start() {
         m_camera = this.GetComponent <Camera> ();
+        m_camera.transform.position = targetObject.transform.position + new Vector3(0, 0, -5);
         m_OrthographicSize = m_camera.orthographicSize;
     }
 
