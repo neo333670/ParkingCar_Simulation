@@ -32,10 +32,11 @@ public class CarEntity : MonoBehaviour
 
     [SerializeField] SpriteRenderer[] m_renders = new SpriteRenderer[5];
     //backwardSensor
-    [SerializeField] BackwardSensor m_sensor_L;
-    [SerializeField] BackwardSensor m_sensor_R;
+    [SerializeField] GameObject m_Radar;
+
     private void Start() {
         m_GM = GameObject.Find("Game Maneger").GetComponent<GameManerger>();
+        //m_Radar = GameObject.Find("Radars").gameObject;
         GearInspector = Gear.P;
     }
 
@@ -60,7 +61,7 @@ public class CarEntity : MonoBehaviour
     {
         m_Velocity = 0;
     }
-
+    /**
     void OnTriggerEnter2D(Collider2D other){
         Checkpoint checkpoint = other.gameObject.GetComponent<Checkpoint> ();
         if (checkpoint != null) {
@@ -89,33 +90,31 @@ public class CarEntity : MonoBehaviour
         }
 
     }
+    **/
 
     //Change GearBox
     void ChangeGearUP() {
         if((int)GearInspector < 3){
             if (GearInspector == Gear.R){
-                m_sensor_L.gameObject.SetActive(false);
-                m_sensor_R.gameObject.SetActive(false);
+               m_Radar.gameObject.SetActive(false);
             }
             GearInspector++;
             m_GM.updateGearText(GearInspector.ToString());
             if (GearInspector == Gear.R) {
-                m_sensor_L.gameObject.SetActive(true);
-                m_sensor_R.gameObject.SetActive(true);
+                m_Radar.gameObject.SetActive(true);
             }
         }
     }
     void ChangeGearDown() {
         if ((int)GearInspector > 0) {
             if (GearInspector == Gear.R){
-                m_sensor_L.gameObject.SetActive(false);
-                m_sensor_R.gameObject.SetActive(false);
+                m_Radar.gameObject.SetActive(false);
+
             }
             GearInspector--;
             m_GM.updateGearText(GearInspector.ToString());
             if (GearInspector == Gear.R) {
-                m_sensor_L.gameObject.SetActive(true);
-                m_sensor_R.gameObject.SetActive(true);
+                m_Radar.gameObject.SetActive(true);
             }
         }
     }

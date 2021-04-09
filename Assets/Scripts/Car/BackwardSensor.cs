@@ -9,11 +9,18 @@ public class BackwardSensor : MonoBehaviour
     private CarEntity m_car;
     float CarRotationZ;
     Vector2 Sensor_NormolVector;
-    Vector2 SensorOrigin;
+    Vector2 L_SensorOrigin;
+    Vector2 R_SensorOrigin;
     public GameObject ReversingAlarm;
+
+    private GameObject ReversingRadar_L;
+    private GameObject ReversingRadar_R;
 
     private void Start() {
         m_car = GameObject.Find("Car").GetComponent<CarEntity> ();
+        ReversingRadar_L = gameObject.transform.GetChild(0).gameObject;
+        ReversingRadar_R = gameObject.transform.GetChild(1).gameObject;
+
         ReversingAlarm.SetActive(false);
     }
 
@@ -21,16 +28,19 @@ public class BackwardSensor : MonoBehaviour
         CarRotationZ = m_car.transform.rotation.eulerAngles.z;
         Sensor_NormolVector = new Vector2 (-Mathf.Cos(CarRotationZ * Mathf.Deg2Rad), 
             -Mathf.Sin(CarRotationZ * Mathf.Deg2Rad));
-        SensorOrigin = transform.position;
+        L_SensorOrigin = ReversingRadar_L.transform.position;
+        R_SensorOrigin = ReversingRadar_R.transform.position;
 
-        Debug.DrawRay(SensorOrigin, Sensor_NormolVector * RayLenth, Color.red);
+        Debug.DrawRay(L_SensorOrigin, Sensor_NormolVector * RayLenth, Color.red);
+        Debug.DrawRay(R_SensorOrigin, Sensor_NormolVector * RayLenth, Color.red);
 
-        if (Physics2D.Raycast(SensorOrigin, Sensor_NormolVector, RayLenth))
+        if (Physics2D.Raycast(L_SensorOrigin, Sensor_NormolVector, RayLenth) | Physics2D.Raycast(R_SensorOrigin, Sensor_NormolVector, RayLenth))
         {
             ReversingAlarm.SetActive(true);
         }
-        if (!Physics2D.Raycast(SensorOrigin, Sensor_NormolVector, RayLenth)
-             && ReversingAlarm) {
+        if (!Physics2D.Raycast(L_SensorOrigin, Sensor_NormolVector, RayLenth) 
+            && !Physics2D.Raycast(R_SensorOrigin, Sensor_NormolVector, RayLenth) 
+            && ReversingAlarm) {
             ReversingAlarm.SetActive(false);
         }
     }

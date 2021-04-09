@@ -317,7 +317,6 @@ GameObject:
   - component: {fileID: 3906211501364464358}
   - component: {fileID: 5234037355440692427}
   - component: {fileID: 5234037355440692428}
-  - component: {fileID: 5234037355440692424}
   m_Layer: 2
   m_Name: Parallel_Parking 1
   m_TagString: Untagged
@@ -464,27 +463,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5234037355440692424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2415782573173556453}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f16601e1cb2ca8a4ba7f1949e69b81e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  alarm: {fileID: 0}
-  BackLevel_List:
-  - {fileID: 1083504400196537974}
-  - {fileID: 4043809705049876865}
-  - {fileID: 4604796544206150685}
-  - {fileID: 2650094978642443019}
-  - {fileID: 4657477936063791323}
-  - {fileID: 9029140649894659829}
-  AlertIcon: {fileID: 2820430511881396903}
 --- !u!1 &2520948254612922688
 GameObject:
   m_ObjectHideFlags: 0

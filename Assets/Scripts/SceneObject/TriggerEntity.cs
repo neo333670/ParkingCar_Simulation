@@ -14,12 +14,20 @@ public class TriggerEntity : MonoBehaviour
 
     bool RegionColorChanged = false;
 
+    //BoxCollider2D m_boxCollider;
+    GameObject m_inner;
+    EdgeCollider2D m_edgeCollider;
+
     [SerializeField] SpriteRenderer[] BackLevel_List = new SpriteRenderer[5];
     [SerializeField] SpriteRenderer AlertIcon;
 
     private void Start()
     {
         alarm = GetComponent<AudioSource>();
+        //m_boxCollider = GetComponentInChildren<BoxCollider2D>();
+        m_inner = gameObject.transform.GetChild(1).gameObject;
+        //m_inner.transform.position += new Vector3(-5, -5,0); 
+        m_edgeCollider = m_inner.GetComponent<EdgeCollider2D>();
 
         m_car_poly = GameObject.Find("body").GetComponent<PolygonCollider2D>();
         m_Trigger = GetComponent<BoxCollider2D>();
@@ -74,11 +82,6 @@ public class TriggerEntity : MonoBehaviour
             {
                 Vector2 GlobalPoints = m_car_poly.transform.TransformPoint(m_car_poly.points[i]);
                 poly_points[i] = GlobalPoints;
-
-                if (m_Trigger.bounds.Contains(GlobalPoints))
-                {
-                    print("contains vertex");
-                }
             }
             if (IsParkingCompleted() && !RegionColorChanged)
             {
@@ -92,4 +95,21 @@ public class TriggerEntity : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (m_edgeCollider.IsTouching(other))
+        {
+            AlertIconChangeRed();
+            alarm.Play();
+        }                  
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!m_edgeCollider.IsTouching(other))
+        {
+            AlertIconResetColor();
+            alarm.Stop();
+        }     
+    }
 }
