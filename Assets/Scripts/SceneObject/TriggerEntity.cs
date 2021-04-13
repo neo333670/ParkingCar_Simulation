@@ -94,7 +94,7 @@ public class TriggerEntity : MonoBehaviour
             }
         }
     }
-
+    /**
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (m_edgeCollider.IsTouching(other))
@@ -112,4 +112,5 @@ public class TriggerEntity : MonoBehaviour
             alarm.Stop();
         }     
     }
+    **/
 }

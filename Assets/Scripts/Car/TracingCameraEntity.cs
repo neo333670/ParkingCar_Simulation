@@ -7,7 +7,7 @@ public class TracingCameraEntity : MonoBehaviour
 {
     public CarEntity targetObject;
     public float tracingLateFactor = 1;
-    public float MOVING_THRESHOLD = 10f;
+    public float MOVING_THRESHOLD = 2f;
 
     Camera m_camera;
     float m_OrthographicSize;

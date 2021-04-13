@@ -61,7 +61,7 @@ public class CarEntity : MonoBehaviour
     {
         m_Velocity = 0;
     }
-    /**
+
     void OnTriggerEnter2D(Collider2D other){
         Checkpoint checkpoint = other.gameObject.GetComponent<Checkpoint> ();
         if (checkpoint != null) {
@@ -90,7 +90,7 @@ public class CarEntity : MonoBehaviour
         }
 
     }
-    **/
+
 
     //Change GearBox
     void ChangeGearUP() {
